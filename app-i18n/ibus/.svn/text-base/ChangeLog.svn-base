@@ -1,0 +1,56 @@
+# ChangeLog for app-i18n/ibus
+# Copyright 1999-2008 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  13 Nov 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Merged changes from my local repos.
+
+  01 Nov 2008; Hong Hao <oahong@gmail.com> app-i18n/ibus/ibus-9999.ebuild:
+  Update dependency. (ibus requires >=dev-libs/glib-2.16)
+
+  16 Oct 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Remove unnecessary 'python_version' call from pkg_postrm phrase
+
+  15 Oct 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Fixed some QA issues.
+
+  07 Oct 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Another fix.
+
+  07 Oct 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Updated runtime depends (ibus requires notification-daemon). License
+  switched to LGPL-2.1
+
+  01 Oct 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Fixed runtime depend on iso-codes.
+
+  29 Sep 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  http://code.google.com/p/ibus/issues/detail?can=2&q=110&colspec=ID%20Type%20
+  Status%20Priority%20Milestone%20Owner%20Summary&id=110#c37
+
+  27 Sep 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Fixed (*hopefully*) depends here, also included some EAPI-2 features.
+
+  18 Sep 2008; Hong Hao <oahong@gmail.com> ibus-9999.ebuild:
+  Ibus now has its own copy of dev-python/gconf-python. It really make no
+  sense to our gentoo users. Gentoo already split up the whole gnome-python
+  package.
+
+  08 Sep 2008; Hong Hao <oahong@gmail.com> +ibus-9999.ebuild, +metadata.xml:
+  从sunrise中移回9999版本的ebuild
+
+  06 Sep 2008; Hong Hao <oahong@gmail.com> -ibus-0.1.1.20080901.ebuild:
+  Drop snapshot (In portage)
+
+  01 Sep 2008; Hong Hao <oahong@gmail.com> ibus-0.1.1.20080901.ebuild,
+  ibus-9999.ebuild:
+  Added ~amd64 keyword, fixed a typo.
+
+  01 Sep 2008; Hong Hao <oahong@gmail.com> -ibus-0.1.1.20080830.ebuild,
+  +ibus-0.1.1.20080901.ebuild, ibus-9999.ebuild:
+  Bump to snapshot 20080901
+
+  31 Aug 2008; Hong Hao <oahong@gmail.com> +ibus-0.1.1.20080830.ebuild,
+  +ibus-9999.ebuild, +files/horizental_orientation.patch, +metadata.xml:
+  New ebuild for bug #236277, Thanks a lot, tommy(at gentoo.org)
+

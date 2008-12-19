@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1
+END
+100-bz386904_config_rules_install_dist_files.patch
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/100-bz386904_config_rules_install_dist_files.patch
+END
+001-firefox_gentoo_install_dirs.patch
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/001-firefox_gentoo_install_dirs.patch
+END
+116-ubuntu_no_app_updates.patch
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/116-ubuntu_no_app_updates.patch
+END
+118-bz412610_att335369_realpath_overflow.patch
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/118-bz412610_att335369_realpath_overflow.patch
+END
+108-dont_depend_on_nspr_sources.patch
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/108-dont_depend_on_nspr_sources.patch
+END
+104-installer_shouldnt_copy_xulrunner.patch
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/104-installer_shouldnt_copy_xulrunner.patch
+END
+112-lp185622_system_path_default_browser.patch
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/112-lp185622_system_path_default_browser.patch
+END
+106-installer_use_stdout_for_missing_files.patch
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/proj/mozilla/!svn/ver/153/www-client/mozilla-firefox/files/3.1_beta1/106-installer_use_stdout_for_missing_files.patch
+END
