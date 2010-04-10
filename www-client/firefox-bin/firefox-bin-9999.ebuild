@@ -4,19 +4,16 @@
 
 inherit eutils mozilla-launcher multilib mozextension
 
-LANGS="af ar be bg bn-IN ca cs cy da de el en-GB en-US eo es-AR es-ES et eu fa fi fr fy-NL ga-IE gl gu-IN he hi-IN hu id is it ja ka kk kn ko ku lt lv mk mr nb-NO nl nn-NO oc pa-IN pl pt-BR pt-PT ro ru si sk sl sq sr sv-SE ta te th uk vi zh-CN zh-TW"
-NOSHORTLANGS="en-GB es-AR pt-BR zh-CN"
-
-MY_PV="${PV/_rc/rc}"
+MY_PV="3.6.4pre"
 MY_PN="${PN/-bin}"
-MY_P="${MY_PN}-${MY_PV}"
+MY_P="${MY_PN}-${MY_PV}.en-US.linux-i686"
 
 DESCRIPTION="Firefox Web Browser"
-REL_URI="http://releases.mozilla.org/pub/mozilla.org/${MY_PN}/releases/"
-SRC_URI="${REL_URI}/${MY_PV}/linux-i686/en-US/${MY_P}.tar.bz2"
+NIGHTLY_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/"
+SRC_URI="${NIGHTLY_URI}/${MY_P}.tar.bz2"
 
-_PKG="firefox-3.6.4pre.en-US.linux-i686.tar.bz2"
-SRC_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/$_PKG"
+#_PKG="firefox-3.6.4pre.en-US.linux-i686.tar.bz2"
+#SRC_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/$_PKG"
 HOMEPAGE="http://www.mozilla.com/firefox"
 RESTRICT="strip nomirror"
 
