@@ -1,0 +1,11 @@
+--- src/Makefile.am.orig	2009-01-09 13:58:48.000000000 +0800
++++ src/Makefile.am	2009-01-09 14:00:41.000000000 +0800
+@@ -3,7 +3,7 @@
+ # src/Makefile.am for the gsnapshot project
+ # Copyright (c) 2007 Softcraft Impresa, LLC (info at softcraft.org)
+ #
+-SUBDIRS = common programs modules
++SUBDIRS = common programs 
+ 
+ MAINTAINERCLEANFILES = Makefile.in
+ 

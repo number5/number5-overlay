@@ -1,0 +1,35 @@
+--- src/programs/Makefile.am.orig	2009-01-09 14:04:47.000000000 +0800
++++ src/programs/Makefile.am	2009-01-09 14:05:05.000000000 +0800
+@@ -7,22 +7,22 @@
+ 
+ PKG_CFLAGS = -D__USE_GNU -I../common -Wall -g -O -pipe
+ 
+-AM_CFLAGS  = $(PKG_CFLAGS) `pkg-config --cflags gtk+-2.0 libwnck-1.0`
+-AM_LDFLAGS = -Wl,-export-dynamic `pkg-config --libs gtk+-2.0`
++AM_CFLAGS  = $(PKG_CFLAGS) `pkg-config --cflags gtk+-2.0 libxml-2.0`
++AM_LDFLAGS = -Wl,-export-dynamic `pkg-config --libs gtk+-2.0 libxml-2.0`
+ LIBS = -L../common -lsnapshot
+ 
+ bin_PROGRAMS = \
+-gsnapshot \
+-gdisplay \
+-gcontrol \
+-gpanel
++gsnapshot 
++#gdisplay \
++#gcontrol \
++#gpanel
+ 
+ # additional LDFLAGS per program
+-gpanel_LDADD = -lwnck -lxml2
++#gpanel_LDADD = -lwnck -lxml2
+ 
+ # program source dependencies
+ gsnapshot_SOURCES = gsnapshot.h gsnapshot.c
+-gdisplay_SOURCES  = gdisplay.h gdisplay.c
+-gcontrol_SOURCES  = gcontrol.h gcontrol.c
+-gpanel_SOURCES    = gpanel.h gpanel.c menu.c desktop.c
++#gdisplay_SOURCES  = gdisplay.h gdisplay.c
++#gcontrol_SOURCES  = gcontrol.h gcontrol.c
++#gpanel_SOURCES    = gpanel.h gpanel.c menu.c desktop.c
+ 

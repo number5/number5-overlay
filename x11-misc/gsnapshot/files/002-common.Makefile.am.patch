@@ -1,0 +1,13 @@
+--- src/common/Makefile.am.orig	2009-01-09 14:01:28.000000000 +0800
++++ src/common/Makefile.am	2009-01-09 14:01:56.000000000 +0800
+@@ -5,8 +5,8 @@
+ #
+ MAINTAINERCLEANFILES = Makefile.in
+ 
+-AM_CFLAGS  = -D__USE_GNU -Wall -g -O -pipe `pkg-config --cflags gtk+-2.0`
+-AM_LDFLAGS =
++AM_CFLAGS  = -D__USE_GNU -Wall -g -O -pipe `pkg-config --cflags gtk+-2.0 libxml-2.0`
++AM_LDFLAGS = `pkg-config --libs libxml-2.0`
+ 
+ # libsnapshot.a is needed by all the applications
+ lib_LIBRARIES = libsnapshot.a
