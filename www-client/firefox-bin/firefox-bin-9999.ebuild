@@ -4,13 +4,13 @@
 
 inherit eutils mozilla-launcher multilib mozextension
 
-MY_PV="3.6.4pre"
+MY_PV="3.6.5pre"
 MY_PN="${PN/-bin}"
 MY_P="${MY_PN}-${MY_PV}.en-US.linux-i686"
 
 DESCRIPTION="Firefox Web Browser"
 NIGHTLY_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/"
-SRC_URI="${NIGHTLY_URI}/${MY_P}.tar.bz2"
+#SRC_URI="${NIGHTLY_URI}/${MY_P}.tar.bz2"
 
 #_PKG="firefox-3.6.4pre.en-US.linux-i686.tar.bz2"
 #SRC_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/$_PKG"
@@ -51,8 +51,8 @@ pkg_setup() {
 
 
 src_unpack() {
-	unpack ${MY_P}.tar.bz2
-
+	wget -c  "${NIGHTLY_URI}/${MY_P}.tar.bz2" -O "${T}"/${MY_P}.tar.bz2
+	tar xjvf ${T}/${MY_P}.tar.bz2 
 }
 
 src_install() {
