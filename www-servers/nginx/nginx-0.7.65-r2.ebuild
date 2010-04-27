@@ -233,6 +233,12 @@ src_install() {
 		fixlocalpod
 	fi
 
+	if use nginx_modules_http_uwsgi; then
+		cd "${WORKDIR}"/uwsgi-${UWSGI_PV}
+		insinto /etc/${PN}
+		doins nginx/uwsgi_params
+	fi
+
 	if use nginx_modules_http_passenger; then
 		# passengers Rakefile is so horribly broken that we have to do it
 		# manually
