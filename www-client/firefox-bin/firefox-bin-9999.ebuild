@@ -12,8 +12,6 @@ DESCRIPTION="Firefox Web Browser"
 NIGHTLY_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/"
 #SRC_URI="${NIGHTLY_URI}/${MY_P}.tar.bz2"
 
-#_PKG="firefox-3.6.4pre.en-US.linux-i686.tar.bz2"
-#SRC_URI="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-1.9.2/$_PKG"
 HOMEPAGE="http://www.mozilla.com/firefox"
 RESTRICT="strip nomirror"
 

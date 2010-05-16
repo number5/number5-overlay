@@ -18,7 +18,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND=">=virtual/jre-1.5"
-DEPEND=">=virtual/jdk-1.5"
+DEPEND=">=virtual/jdk-1.5
+        dev-java/jline"
 
 S="${WORKDIR}/${PN}"
 
@@ -28,7 +29,7 @@ src_prepare() {
 
 src_install() {
 	java-pkg_dojar ${PN}.jar
-	java-pkg_dolauncher  ${PN} --main clojure.lang.Repl
+	java-pkg_dolauncher  ${PN} --java-args -cp jline.jar:${PN}.jar jline.ConsoleRunner clojure.main
 	dodoc readme.txt || die "dodoc failed"
 	use source && java-pkg_dosrc src/jvm/closure
 }
