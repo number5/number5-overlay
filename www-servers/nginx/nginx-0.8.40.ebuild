@@ -1,39 +1,64 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-servers/nginx/nginx-0.7.65-r1.ebuild,v 1.3 2010/03/26 14:10:32 hollow Exp $
 
 EAPI="2"
 
+# Maintainer notes:
+# - http_rewrite-independent pcre-support makes sense for matching locations without an actual rewrite
+# - any http-module activates the main http-functionality and overrides USE=-http
+# - keep the following 3 requirements in mind before adding external modules:
+#   * alive upstream
+#   * sane packaging
+#   * builds cleanly
+# - TODO: test the google-perftools module (included in vanilla tarball)
+
+# prevent perl-module from adding automagic perl DEPENDs
+GENTOO_DEPEND_ON_PERL="no"
+
+# http_headers_more (http://github.com/agentzh/headers-more-nginx-module, BSD license)
+HTTP_HEADERS_MORE_MODULE_PV="0.08"
+HTTP_HEADERS_MORE_MODULE_P="ngx-http-headers-more-${HTTP_HEADERS_MORE_MODULE_PV}"
+HTTP_HEADERS_MORE_MODULE_SHA1="5cd9a38"
+
+# http_passenger (http://www.modrails.com/, MIT license)
+# TODO: currently builds some stuff in src_configure
+PASSENGER_PV="2.2.12"
 USE_RUBY="ruby18"
 RUBY_OPTIONAL="yes"
-PASSENGER_PV="2.2.11"
 
-UWSGI_PV="0.9.5"
+# http_push (http://pushmodule.slact.net/, MIT license)
+HTTP_PUSH_MODULE_P="nginx_http_push_module-0.692"
+
+## http_uwsgi (http://projects.unbit.it/uwsgi/, GPL-2 license)
+#HTTP_UWSGI_MODULE_PV="0.9.5.1"
 
 inherit eutils ssl-cert toolchain-funcs perl-module ruby-ng flag-o-matic
 
 DESCRIPTION="Robust, small and high performance http and reverse proxy server"
-HOMEPAGE="http://nginx.net/"
+HOMEPAGE="http://nginx.net/
+	http://www.modrails.com/
+	http://pushmodule.slact.net/
+	http://projects.unbit.it/uwsgi/"
 SRC_URI="http://sysoev.ru/nginx/${P}.tar.gz
+	nginx_modules_http_headers_more? ( http://github.com/agentzh/headers-more-nginx-module/tarball/v${HTTP_HEADERS_MORE_MODULE_PV} -> ${HTTP_HEADERS_MORE_MODULE_P}.tar.gz )
 	nginx_modules_http_passenger? ( mirror://rubyforge/passenger/passenger-${PASSENGER_PV}.tar.gz )
-	nginx_modules_http_uwsgi? (
-	http://projects.unbit.it/downloads/uwsgi-${UWSGI_PV}.tar.gz )"
+	nginx_modules_http_push? (
+	http://pushmodule.slact.net/downloads/${HTTP_PUSH_MODULE_P}.tar.gz )"
 
 
-
-LICENSE="BSD"
+LICENSE="BSD BSD-2 GPL-2 MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86 ~x86-fbsd"
 
 NGINX_MODULES_STD="access auth_basic autoindex browser charset empty_gif fastcgi
 geo gzip limit_req limit_zone map memcached proxy referer rewrite ssi
-upstream_ip_hash userid"
+split_clients upstream_ip_hash userid http_uwsgi"  
 NGINX_MODULES_OPT="addition dav degradation flv geoip gzip_static image_filter
 perl random_index realip secure_link stub_status sub xslt"
 NGINX_MODULES_MAIL="imap pop3 smtp"
-NGINX_MODULES_3RD="http_passenger http_uwsgi"
+NGINX_MODULES_3RD="http_headers_more http_passenger http_push"
 
-IUSE="debug +http +http-cache ipv6 +pcre ssl"
+IUSE="aio debug +http +http-cache ipv6 libatomic +pcre ssl vim-syntax"
 
 for mod in $NGINX_MODULES_STD; do
 	IUSE="${IUSE} +nginx_modules_http_${mod}"
@@ -52,7 +77,6 @@ for mod in $NGINX_MODULES_3RD; do
 done
 
 CDEPEND="
-	arm? ( dev-libs/libatomic_ops )
 	pcre? ( >=dev-libs/libpcre-4.2 )
 	ssl? ( dev-libs/openssl )
 	http-cache? ( userland_GNU? ( dev-libs/openssl ) )
@@ -64,17 +88,18 @@ CDEPEND="
 	nginx_modules_http_rewrite? ( >=dev-libs/libpcre-4.2 )
 	nginx_modules_http_secure_link? ( userland_GNU? ( dev-libs/openssl ) )
 	nginx_modules_http_xslt? ( dev-libs/libxml2 dev-libs/libxslt )
-	nginx_modules_http_uwsgi? ( www-servers/uwsgi )
 	nginx_modules_http_passenger? (
 		$(ruby_implementation_depend ruby18)
 		>=dev-ruby/rubygems-0.9.0
 		>=dev-ruby/rake-0.8.1
 		>=dev-ruby/fastthread-1.0.1
 		>=dev-ruby/rack-1.0.0
-	)
-"
-RDEPEND="${RDEPEND} ${CDEPEND}"
-DEPEND="${DEPEND} ${CDEPEND}"
+	)"
+RDEPEND="${CDEPEND}"
+DEPEND="${CDEPEND}
+	arm? ( dev-libs/libatomic_ops )
+	libatomic? ( dev-libs/libatomic_ops )"
+PDEPEND="vim-syntax? ( app-vim/nginx-syntax )"
 
 pkg_setup() {
 	ebegin "Creating nginx user and group"
@@ -88,16 +113,27 @@ pkg_setup() {
 		ewarn "http://bugs.gentoo.org/show_bug.cgi?id=274614"
 	fi
 
+	if use libatomic; then
+		ewarn "GCC 4.1+ features built-in atomic operations."
+		ewarn "Using libatomic_ops is only needed if using"
+		ewarn "a different compiler or a GCC prior to 4.1"
+	fi
 
 	if [[ -n $NGINX_ADD_MODULES ]]; then
 		ewarn "You are building custom modules via \$NGINX_ADD_MODULES!"
 		ewarn "This nginx installation is not supported!"
-		ewarn "Please do not file bug reports!"
+		ewarn "Make sure you can reproduce the bug without those modules"
+		ewarn "_before_ reporting bugs."
 	fi
 
 	if use nginx_modules_http_passenger; then
 		ruby-ng_pkg_setup
 		use debug && append-flags -DPASSENGER_DEBUG
+	fi
+
+	if use !http; then
+		ewarn "To actually disable all http-functionality you also have to disable"
+		ewarn "all nginx http modules."
 	fi
 }
 
@@ -118,8 +154,10 @@ src_prepare() {
 src_configure() {
 	local myconf= http_enabled= mail_enabled=
 
+	use aio && myconf="${myconf} --with-file-aio --with-aio_module"
 	use debug && myconf="${myconf} --with-debug"
 	use ipv6 && myconf="${myconf} --with-ipv6"
+	use libatomic && myconf="${myconf} --with-libatomic"
 	use pcre && myconf="${myconf} --with-pcre"
 
 	# HTTP modules
@@ -142,13 +180,25 @@ src_configure() {
 		myconf="${myconf} --with-http_realip_module"
 	fi
 
+	# third-party modules
+	if use nginx_modules_http_headers_more; then
+		http_enabled=1
+		myconf="${myconf} --add-module=${WORKDIR}/agentzh-headers-more-nginx-module-${HTTP_HEADERS_MORE_MODULE_SHA1}"
+	fi
+
 	if use nginx_modules_http_passenger; then
 		http_enabled=1
 		myconf="${myconf} --add-module=${WORKDIR}/passenger-${PASSENGER_PV}/ext/nginx"
 	fi
-	if use nginx_modules_http_uwsgi; then
+
+	if use nginx_modules_http_push; then
 		http_enabled=1
-		myconf="${myconf} --add-module=${WORKDIR}/uwsgi-${UWSGI_PV}/nginx"
+		myconf="${myconf} --add-module=${WORKDIR}/${HTTP_PUSH_MODULE_P}"
+	fi
+
+	if use !nginx_modules_http_uwsgi; then
+		http_enabled=1
+		#myconf="${myconf} --without-http_uwsgi_module"
 	fi
 
 	if use http || use http-cache; then
@@ -221,7 +271,7 @@ src_install() {
 	insinto /etc/${PN}
 	doins conf/*
 
-	dodoc CHANGES{,.ru} README
+	dodoc CHANGES* README
 
 	# logrotate
 	insinto /etc/logrotate.d
@@ -233,11 +283,11 @@ src_install() {
 		fixlocalpod
 	fi
 
-	if use nginx_modules_http_uwsgi; then
-		cd "${WORKDIR}"/uwsgi-${UWSGI_PV}
-		insinto /etc/${PN}
-		doins nginx/uwsgi_params
+	if use nginx_modules_http_push; then
+		docinto ${HTTP_PUSH_MODULE_P}
+		dodoc "${WORKDIR}"/${HTTP_PUSH_MODULE_P}/{changelog.txt,protocol.txt,README}
 	fi
+
 
 	if use nginx_modules_http_passenger; then
 		# passengers Rakefile is so horribly broken that we have to do it
