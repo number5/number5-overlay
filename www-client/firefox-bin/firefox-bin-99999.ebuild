@@ -4,7 +4,7 @@
 
 inherit eutils mozilla-launcher multilib mozextension
 
-MY_PV="3.7a6pre"
+MY_PV="4.0b2pre"
 MY_PN="${PN/-bin}"
 MY_P="${MY_PN}-${MY_PV}.en-US.linux-i686"
 
